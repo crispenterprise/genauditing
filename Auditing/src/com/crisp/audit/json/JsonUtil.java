@@ -9,12 +9,13 @@ import org.json.JSONObject;
 
 public class JsonUtil {
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String encode(Integer eventAuditId, boolean status){
 		String jsonString = "";
 		
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("ID", eventAuditId+"");
-		map.put("Status", status+"");
+		Map map = new HashMap();
+		map.put("ID", eventAuditId);
+		map.put("Status", status);
 		
 		
 		JSONObject jsonObj = new JSONObject(map);
