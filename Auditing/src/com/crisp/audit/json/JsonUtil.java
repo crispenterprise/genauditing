@@ -14,7 +14,7 @@ public class JsonUtil {
 		String jsonString = "";
 		
 		Map map = new HashMap();
-		map.put("ID", eventAuditId);
+		map.put("Event Audit ID", eventAuditId);
 		map.put("Status", status);
 		
 		
