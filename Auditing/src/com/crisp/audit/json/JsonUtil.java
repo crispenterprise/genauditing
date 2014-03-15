@@ -32,12 +32,12 @@ public class JsonUtil {
 		JSONObject audJasonOjb= new JSONObject(jsonStr);
 		
 		String dbHost = audJasonOjb.getString("dbHost");
-		String dbName = audJasonOjb.getString("dbName");;
-		String dbUsername = audJasonOjb.getString("dbUsername");;
-		String dbPassword = audJasonOjb.getString("dbPasswordt");;
-		int dbPort = audJasonOjb.getInt("dbPort");;
-		String username = audJasonOjb.getString("username");;
-		int eventId  = audJasonOjb.getInt("eventId");;
+		String dbName = audJasonOjb.getString("dbName");
+		String dbUsername = audJasonOjb.getString("dbUsername");
+		String dbPassword = audJasonOjb.getString("dbPasswordt");
+		int dbPort = audJasonOjb.getInt("dbPort");
+		String username = audJasonOjb.getString("username");
+		int eventId  = audJasonOjb.getInt("eventId");
 		
 		AuditObj audObj = new AuditObj(dbHost,dbName,dbUsername,dbPassword,dbPort,username,eventId);
 		return audObj;
