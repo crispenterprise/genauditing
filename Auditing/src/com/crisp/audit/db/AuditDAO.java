@@ -5,13 +5,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.generic.audit.AuditObj;
+
 
 public class AuditDAO extends BaseDAO {
 
 	
-	public void insertAudit(){
+	public AuditDAO(AuditObj audit) {
+		super(audit);
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public boolean insertAudit(AuditObj audit){
 		
-		
+		boolean success = true;
 			try {
 				
 				PreparedStatement stmt = null;
@@ -21,9 +29,9 @@ public class AuditDAO extends BaseDAO {
 			
 				stmt = dbConnection.prepareStatement(query);
 			
-					stmt.setString(1, "jerry");
-					stmt.setString(2, "make payment");
-					stmt.setString(3, "ok");
+					stmt.setString(1, audit.getUsername());
+					stmt.setString(2, audit.getEvent());
+					stmt.setString(3, audit.getComments());
 					
 					 int count = stmt.executeUpdate();
 				     System.out.println(count + "row(s) affected");
@@ -40,8 +48,10 @@ public class AuditDAO extends BaseDAO {
 	            System.out.println("SQLState:     " + e.getSQLState());
 	            System.out.println("VendorError:  " + e.getErrorCode());
 	
-	            
+	            success = false;
 			}
+			
+			return success;
 	}
 	
 	

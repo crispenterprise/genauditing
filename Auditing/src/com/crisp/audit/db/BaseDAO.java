@@ -6,18 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.generic.audit.AuditObj;
+
 public class BaseDAO {
 
 	protected Connection dbConnection;
 	
-	String host = "localhost";
+	/*String host = "localhost";
 	String port = "3306";
 	String database = "genaudit";
 	
 	String username = "root";
-	String password = "";
+	String password = "";*/
 	
-	public BaseDAO() {
+	public BaseDAO(AuditObj audit) {
 		
 		try {                        
             Class.forName("com.mysql.jdbc.Driver");
@@ -28,13 +30,13 @@ public class BaseDAO {
         }
         
 		String url =
-            "jdbc:mysql://"+host+":"+port+"/"+database;
+            "jdbc:mysql://"+audit.getDbHost()+":"+audit.getDbPort()+"/"+audit.getDbName();
 		
 		try {
 			
 			dbConnection =
 			    DriverManager.getConnection(
-			                url,username, password);	
+			                url,audit.getDbUsername(), audit.getDbPassword());	
             
 			
 		} catch (SQLException e) {
