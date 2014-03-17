@@ -15,30 +15,72 @@ public class AuditDAO extends BaseDAO {
 		super(audit);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	public boolean insertEvent(AuditObj audit){
+			
+			boolean success = true;
+				try {
+					
+					PreparedStatement stmt = null;
+				
+					
+					String query = "insert into event (event_id, description) VALUES (?, ?)";
+				
+					stmt = dbConnection.prepareStatement(query);
+				
+						stmt.setInt(1, audit.getEventId());
+						stmt.setString(2, audit.getEvent());
+						
+						
+						 int count = stmt.executeUpdate();
+					     System.out.println(count + "event table row(s) affected");
+						
+					     stmt.close();
+					
+							        
+		            
+		            
+					
+				} catch (SQLException e) {
+					
+					System.out.println("SQLException: " + e.getMessage());
+		            System.out.println("SQLState:     " + e.getSQLState());
+		            System.out.println("VendorError:  " + e.getErrorCode());
+		
+		            success = false;
+				}
+				
+				return success;
+		}
+	
 
 	public boolean insertAudit(AuditObj audit){
 		
 		boolean success = true;
+	
 			try {
 				
 				PreparedStatement stmt = null;
 			
 				
-				String query = "insert into auditing (username, event, comment) VALUES (?, ?, ?)";
-			
-				stmt = dbConnection.prepareStatement(query);
-			
-					stmt.setString(1, audit.getUsername());
-					stmt.setString(2, audit.getEvent());
-					stmt.setString(3, audit.getComments());
+				if(insertEvent(audit))
+				{
 					
-					 int count = stmt.executeUpdate();
-				     System.out.println(count + "row(s) affected");
-					
-				     stmt.close();
+					String query = "insert into auditing (username, event, comment,event_id) VALUES (?, ?, ?,?)";
 				
-						        
+					stmt = dbConnection.prepareStatement(query);
+				
+						stmt.setString(1, audit.getUsername());
+						stmt.setString(2, audit.getEvent());
+						stmt.setString(3, audit.getComments());
+						stmt.setInt(4, audit.getEventId());
+						
+						 int count = stmt.executeUpdate();
+					     System.out.println(count + "auditing table row(s) affected");
+						
+					     stmt.close();
+				}else
+					 success = false;
 	            
 	            
 				

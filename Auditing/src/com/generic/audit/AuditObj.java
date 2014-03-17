@@ -16,15 +16,28 @@ public class AuditObj {
 		
 	}
 	
-	public AuditObj(String host,String dbName,String dUsername,String password,int port, String username, int eventId)
+	public AuditObj(String host,String dbName,String dUsername,String password,int port, String username, int eventId,String comments, String event)
 	{
 		this.dbHost = host;
 		this.dbName = dbName;
 		this.dbUsername = dUsername;
-		this.dbPassword = host;
+		this.dbPassword = password;
 		this.dbPort = port;
 		this.username = username;
 		this.eventId = eventId;
+		this.comments = comments;
+		this.event = event;
+		
+
+		System.out.println("dbHost:"+dbHost);
+		System.out.println("dbName:"+dbName);
+		System.out.println("dbUsername:"+dbUsername);
+		System.out.println("dbPassword:"+dbPassword);
+		System.out.println("dbPort:"+dbPort);
+		System.out.println("username:"+username);
+		System.out.println("eventId:"+eventId);
+		System.out.println("comments:"+comments);
+		
 	}
 
 	public String getDbHost() {

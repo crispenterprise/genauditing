@@ -2,14 +2,19 @@ package com.generic.audit;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
-import org.json.JSONString;
-
-import sun.net.www.http.HttpClient;
 
 public class JavaTestClient {
 
@@ -23,9 +28,12 @@ public class JavaTestClient {
 	    	URL url = null;
 	       
 	    	url = new URL("http://localhost:8080/Auditing/Audit");
-	
+	    	
+	    	// JSON test web service URL
+	    	//url = new URL("http://date.jsontest.com");
+	    	
 	    	HttpURLConnection urlConn = null;
-				
+			/*	
 			urlConn = (HttpURLConnection) url.openConnection();
 			
 			urlConn.setDoInput (true);
@@ -36,13 +44,15 @@ public class JavaTestClient {
 			
 			urlConn.setRequestProperty("Content-Type", "application/json");
 			
-			urlConn.connect();
+	
 			
+			urlConn.connect();
+			*/
 			DataOutputStream output = null;
 
 			DataInputStream input = null;
 			
-			output = new DataOutputStream(urlConn.getOutputStream());
+			//output = new DataOutputStream(urlConn.getOutputStream());
 			
 			  
 			JSONObject obj=new JSONObject();
@@ -50,31 +60,49 @@ public class JavaTestClient {
 			obj.put("dbPort",new Integer(3306));
 			obj.put("dbName","genaudit");
 			obj.put("dbUsername","root");
-			obj.put("dbPassword","");
-			obj.put("eventId",new Integer(1));
-			obj.put("userName","andpwil");
-			obj.put("comment","User Crisp Technologies registered with username andpwil.");
-    
-  
-			StringWriter out = new StringWriter();
-			String jsonText = out.toString();
-			System.out.print(jsonText);
-			  
+			obj.put("dbPassword","b18cintegra");
+			obj.put("eventId",new Integer(3));
+			obj.put("userName","ariley");
+			obj.put("comment","User Crisp Technologies registered with username ariley.");
+			obj.put("event", "process church offering");
+			
+			
+			
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			HttpPost post = new HttpPost("http://localhost:8080/Auditing/Audit");
+			CloseableHttpResponse resp = null;
+			
+			
+			 List<NameValuePair> params = new ArrayList<>();
+		     params.add(new BasicNameValuePair("jsondata", obj.toString()));
+			
+		     post.setEntity(new UrlEncodedFormEntity(params));
+	            
+		     resp = httpClient.execute(post);
+		     
+		     System.out.println("Status Code:  "+ resp.getStatusLine().getStatusCode());
+		    
+			System.out.println("JSon Request: "+obj.toString());
 			 
-			  
 			 /* Send the request data.*/
-			 output.writeBytes(jsonText);
-			 output.flush();
-			 output.close();
+			// output.writeBytes(obj.toString());
+			// output.flush();
+			// output.close();
 			
 			 /* Get response data.*/
-			String response = null;
+			/*String response = "";
+			String jsonString = "";
 			input = new DataInputStream (urlConn.getInputStream());
+			
 			while (null != ((response = input.readLine()))) {
-			    System.out.println(response);
-			    input.close ();
+				jsonString = jsonString + response;
 			}
-		}catch(Exception e){
+			System.out.println("JSON Response: " + jsonString);
+			 input.close ();*/
+		}
+	    
+	    
+	    catch(Exception e){
 				    	  
 		}		
 	}

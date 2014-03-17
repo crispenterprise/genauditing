@@ -34,12 +34,33 @@ public class JsonUtil {
 		String dbHost = audJasonOjb.getString("dbHost");
 		String dbName = audJasonOjb.getString("dbName");
 		String dbUsername = audJasonOjb.getString("dbUsername");
-		String dbPassword = audJasonOjb.getString("dbPasswordt");
+		String dbPassword = audJasonOjb.getString("dbPassword");
 		int dbPort = audJasonOjb.getInt("dbPort");
-		String username = audJasonOjb.getString("username");
+		String username = audJasonOjb.getString("userName");
 		int eventId  = audJasonOjb.getInt("eventId");
+		String comments = audJasonOjb.getString("comment");
+		String event = audJasonOjb.getString("event");
 		
-		AuditObj audObj = new AuditObj(dbHost,dbName,dbUsername,dbPassword,dbPort,username,eventId);
+		System.out.println("dbHost"+dbHost);
+		System.out.println("dbName"+dbName);
+		System.out.println("dbUsername"+dbUsername);
+		System.out.println("dbPassword"+dbPassword);
+		System.out.println("dbPort"+dbPort);
+		System.out.println("username"+username);
+		System.out.println("eventId"+eventId);
+		System.out.println("comments"+comments);
+		
+		/*
+		audit.setDbHost("localhost");
+		audit.setDbUsername("root");
+		audit.setDbName("genaudit");
+		audit.setDbPassword("b18cintegra");
+		audit.setDbPort(3306);
+		audit.setUsername("Church MIS");
+		audit.setComments("Offering By Cassandra");
+		audit.setEvent("Process Offering");
+		*/
+		AuditObj audObj = new AuditObj(dbHost,dbName,dbUsername,dbPassword,dbPort,username,eventId,comments,event);
 		return audObj;
 	}
 

@@ -3,6 +3,7 @@ package com.generic.audit;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+
+import com.crisp.audit.db.AuditDAO;
+import com.crisp.audit.json.JsonUtil;
 
 
 /**
@@ -38,7 +42,7 @@ public class Audit extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		doPost(request, response);
+		//doPost(request, response);
 	}
 
 	/**
@@ -46,46 +50,29 @@ public class Audit extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		System.out.println("param server: " + (String)request.getParameter("jsondata"));
+		
+		JsonUtil util = new JsonUtil();
+		
+		AuditObj auditDTO = util.decode((String)request.getParameter("jsondata"));
+		
+		AuditDAO auditDAO = new AuditDAO(auditDTO);
+		boolean successFlag = auditDAO.insertAudit(auditDTO);
+		
+		System.out.println("Audit Status: " + successFlag);
+		
+		String jsonResp = util.encode(auditDTO.getEventId(), successFlag);
+		
+		System.out.println("jsonResp: "+ jsonResp);
+		
 		// Set response content type
 	      response.setContentType("text/html");
-
-	    //http://json-lib.sourceforge.net/
-	      
-	      JSONObject obj=new JSONObject();
-	      obj.put("name","foo");
-	      obj.put("num",new Integer(100));
-	      obj.put("balance",new Double(1000.21));
-	      obj.put("is_vip",new Boolean(true));
-	     // obj.put("nickname",null);
-	      StringWriter out = new StringWriter();
-	      //obj.write(arg0)
-	      String jsonText = out.toString();
-	      System.out.print(jsonText);
-	      
-	      
-	      
 	      
 	      // Actual logic goes here.
 	      PrintWriter outHtml = response.getWriter();
 	      
-	      /*
-	      Map obj=new LinkedHashMap();
-	      obj.put("name","foo");
-	      obj.put("num",new Integer(100));
-	      obj.put("balance",new Double(1000.21));
-	      obj.put("is_vip",new Boolean(true));
-	      obj.put("nickname",null);
-	      String jsonText = JSONValue.toJSONString(obj);
-	      System.out.print(jsonText);
-	      */
+	      outHtml.println("<h1>"+ jsonResp + "</h1>");
 	      
-	      
-	      outHtml.println("<h1>" + "Hello World: " +jsonText+ "</h1>");
-	      
-	      
-	      
-	      
-		
 	}
 
 }

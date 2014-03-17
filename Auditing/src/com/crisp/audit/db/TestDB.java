@@ -14,7 +14,7 @@ public class TestDB {
 		audit.setDbHost("localhost");
 		audit.setDbUsername("root");
 		audit.setDbName("genaudit");
-		audit.setDbPassword("");
+		audit.setDbPassword("b18cintegra");
 		audit.setDbPort(3306);
 		audit.setUsername("Church MIS");
 		audit.setComments("Offering By Cassandra");
