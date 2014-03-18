@@ -3,6 +3,7 @@ package com.generic.audit;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -50,18 +51,35 @@ public class Audit extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("param server: " + (String)request.getParameter("jsondata"));
-		
+		//System.out.println("param server: " + (String)request.getParameter("jsondata"));
+		String errMsg = "";
 		JsonUtil util = new JsonUtil();
 		
 		AuditObj auditDTO = util.decode((String)request.getParameter("jsondata"));
 		
 		AuditDAO auditDAO = new AuditDAO(auditDTO);
-		boolean successFlag = auditDAO.insertAudit(auditDTO);
+		boolean successFlag = true;
+		
+		
+		try {
+			
+			successFlag = auditDAO.insertAudit(auditDTO);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			successFlag = false;
+			errMsg = e.getMessage();
+			e.printStackTrace();
+		}
 		
 		System.out.println("Audit Status: " + successFlag);
 		
-		String jsonResp = util.encode(auditDTO.getEventId(), successFlag);
+		String jsonResp = util.encode(auditDTO.getEventId(), successFlag, errMsg);
+		
+		if(successFlag)
+			response.setStatus(200);
+		else
+			response.sendError(422,jsonResp);
 		
 		System.out.println("jsonResp: "+ jsonResp);
 		
@@ -71,7 +89,7 @@ public class Audit extends HttpServlet {
 	      // Actual logic goes here.
 	      PrintWriter outHtml = response.getWriter();
 	      
-	      outHtml.println("<h1>"+ jsonResp + "</h1>");
+	      outHtml.println(jsonResp);
 	      
 	}
 

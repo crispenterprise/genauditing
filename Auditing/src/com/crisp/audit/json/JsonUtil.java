@@ -12,13 +12,20 @@ import com.generic.audit.AuditObj;
 public class JsonUtil {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String encode(Integer eventAuditId, boolean status){
+	public String encode(Integer eventAuditId, boolean status,String msg){
 		String jsonString = "";
 		
-		Map map = new HashMap();
-		map.put("ID", eventAuditId);
-		map.put("Status", status);
+		Map debugMap = new HashMap();
+		debugMap.put("data", "");
+		debugMap.put("message", msg);
 		
+		JSONObject debug = new JSONObject(debugMap);
+		
+		
+		Map map = new HashMap();
+		map.put("code", (status != true) ? 422 : 200 );
+		map.put("data",(status != true) ? null : "Audit Entry with event ID: "+eventAuditId+" Successfully Created." );
+		map.put("debug", debug);
 		
 		JSONObject jsonObj = new JSONObject(map);
 		jsonString = jsonObj.toString();
@@ -40,7 +47,7 @@ public class JsonUtil {
 		int eventId  = audJasonOjb.getInt("eventId");
 		String comments = audJasonOjb.getString("comment");
 		String event = audJasonOjb.getString("event");
-		
+		/*
 		System.out.println("dbHost"+dbHost);
 		System.out.println("dbName"+dbName);
 		System.out.println("dbUsername"+dbUsername);
@@ -48,7 +55,7 @@ public class JsonUtil {
 		System.out.println("dbPort"+dbPort);
 		System.out.println("username"+username);
 		System.out.println("eventId"+eventId);
-		System.out.println("comments"+comments);
+		System.out.println("comments"+comments);*/
 		
 		/*
 		audit.setDbHost("localhost");

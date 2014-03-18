@@ -1,7 +1,9 @@
 package com.generic.audit;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class JavaTestClient {
 	    	
 	    	URL url = null;
 	       
-	    	url = new URL("http://localhost:8080/Auditing/Audit");
+	    	//url = new URL("http://localhost:8080/Auditing/Audit");
 	    	
 	    	// JSON test web service URL
 	    	//url = new URL("http://date.jsontest.com");
@@ -43,9 +45,7 @@ public class JavaTestClient {
 			urlConn.setRequestMethod("POST");
 			
 			urlConn.setRequestProperty("Content-Type", "application/json");
-			
 	
-			
 			urlConn.connect();
 			*/
 			DataOutputStream output = null;
@@ -60,16 +60,17 @@ public class JavaTestClient {
 			obj.put("dbPort",new Integer(3306));
 			obj.put("dbName","genaudit");
 			obj.put("dbUsername","root");
-			obj.put("dbPassword","b18cintegra");
-			obj.put("eventId",new Integer(3));
+			obj.put("dbPassword","");
+			obj.put("eventId",new Integer(5));
 			obj.put("userName","ariley");
 			obj.put("comment","User Crisp Technologies registered with username ariley.");
 			obj.put("event", "process church offering");
 			
-			
+			System.out.println("JSon Request Parameter: "+obj.toString());
 			
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			HttpPost post = new HttpPost("http://localhost:8080/Auditing/Audit");
+			//HttpPost post = new HttpPost("http://date.jsontest.com");
 			CloseableHttpResponse resp = null;
 			
 			
@@ -82,7 +83,15 @@ public class JavaTestClient {
 		     
 		     System.out.println("Status Code:  "+ resp.getStatusLine().getStatusCode());
 		    
-			System.out.println("JSon Request: "+obj.toString());
+		     BufferedReader rd = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+
+		     StringBuffer result = new StringBuffer();
+		     String line = "";
+		     while ((line = rd.readLine()) != null) {
+		         result.append(line);
+		     }
+		     System.out.println("Result: " + result);
+			
 			 
 			 /* Send the request data.*/
 			// output.writeBytes(obj.toString());
@@ -103,7 +112,7 @@ public class JavaTestClient {
 	    
 	    
 	    catch(Exception e){
-				    	  
+				   e.printStackTrace();
 		}		
 	}
 }

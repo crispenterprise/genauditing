@@ -1,5 +1,7 @@
 package com.crisp.audit.db;
 
+import java.sql.SQLException;
+
 import com.generic.audit.AuditObj;
 
 public class TestDB {
@@ -14,16 +16,21 @@ public class TestDB {
 		audit.setDbHost("localhost");
 		audit.setDbUsername("root");
 		audit.setDbName("genaudit");
-		audit.setDbPassword("b18cintegra");
+		audit.setDbPassword("");
 		audit.setDbPort(3306);
-		audit.setUsername("Church MIS");
-		audit.setComments("Offering By Cassandra");
-		audit.setEvent("Process Offering");
-		
+		audit.setUsername("ariley");
+		audit.setComments("Offering By ariley");
+		audit.setEvent("Process Payment");
+		audit.setEventId(new Integer(6));
 		
 		AuditDAO auditDAO = new AuditDAO(audit);
 		
-		boolean responseFlag = auditDAO.insertAudit(audit);
+		try {
+			boolean responseFlag = auditDAO.insertAudit(audit);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		auditDAO.getAudits();
 

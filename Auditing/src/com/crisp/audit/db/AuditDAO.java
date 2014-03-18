@@ -15,12 +15,11 @@ public class AuditDAO extends BaseDAO {
 		super(audit);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public boolean insertEvent(AuditObj audit){
+	/*
+	public boolean insertEvent(AuditObj audit) throws SQLException{
 			
 			boolean success = true;
-				try {
-					
+				
 					PreparedStatement stmt = null;
 				
 					
@@ -36,63 +35,33 @@ public class AuditDAO extends BaseDAO {
 					     System.out.println(count + "event table row(s) affected");
 						
 					     stmt.close();
-					
-							        
-		            
-		            
-					
-				} catch (SQLException e) {
-					
-					System.out.println("SQLException: " + e.getMessage());
-		            System.out.println("SQLState:     " + e.getSQLState());
-		            System.out.println("VendorError:  " + e.getErrorCode());
-		
-		            success = false;
-				}
+							     
 				
 				return success;
 		}
-	
+	*/
 
-	public boolean insertAudit(AuditObj audit){
+	public boolean insertAudit(AuditObj audit) throws SQLException{
 		
 		boolean success = true;
 	
-			try {
+		
 				
 				PreparedStatement stmt = null;
 			
-				
-				if(insertEvent(audit))
-				{
-					
-					String query = "insert into auditing (username, event, comment,event_id) VALUES (?, ?, ?,?)";
+					String query = "insert into event_audit (username,comment,event_id) VALUES (?, ?, ?)";
 				
 					stmt = dbConnection.prepareStatement(query);
 				
 						stmt.setString(1, audit.getUsername());
-						stmt.setString(2, audit.getEvent());
-						stmt.setString(3, audit.getComments());
-						stmt.setInt(4, audit.getEventId());
+						stmt.setString(2, audit.getComments());
+						stmt.setInt(3, audit.getEventId());
 						
 						 int count = stmt.executeUpdate();
-					     System.out.println(count + "auditing table row(s) affected");
+					     System.out.println(count + "event_audit table row(s) affected");
 						
 					     stmt.close();
-				}else
-					 success = false;
-	            
-	            
 				
-			} catch (SQLException e) {
-				
-				System.out.println("SQLException: " + e.getMessage());
-	            System.out.println("SQLState:     " + e.getSQLState());
-	            System.out.println("VendorError:  " + e.getErrorCode());
-	
-	            success = false;
-			}
-			
 			return success;
 	}
 	
@@ -104,15 +73,14 @@ public class AuditDAO extends BaseDAO {
 			
 			Statement stmt = dbConnection.createStatement();
 						
-			ResultSet RS = stmt.executeQuery("SELECT audit_id, username, event, comment from auditing");
+			ResultSet RS = stmt.executeQuery("SELECT audit_id, username,comment from event_audit");
 			
             while (RS.next()) {
             	
             	 
             	System.out.println("audit_id : "+RS.getString(1));
             	System.out.println("username : "+RS.getString(2));
-            	System.out.println("event : "+RS.getString(3));
-            	System.out.println("comment : "+RS.getString(4));
+            	System.out.println("comment : "+RS.getString(3));
             	
             	
             	                

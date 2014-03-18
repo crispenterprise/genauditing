@@ -28,7 +28,7 @@ public class AuditObj {
 		this.comments = comments;
 		this.event = event;
 		
-
+		/*
 		System.out.println("dbHost:"+dbHost);
 		System.out.println("dbName:"+dbName);
 		System.out.println("dbUsername:"+dbUsername);
@@ -36,7 +36,7 @@ public class AuditObj {
 		System.out.println("dbPort:"+dbPort);
 		System.out.println("username:"+username);
 		System.out.println("eventId:"+eventId);
-		System.out.println("comments:"+comments);
+		System.out.println("comments:"+comments);*/
 		
 	}
 
